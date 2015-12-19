@@ -4,7 +4,7 @@
 
 [](dependency)
 ```clojure
-[seancorfield/boot-expectations "0.1.0-SNAPSHOT"] ;; latest release
+[seancorfield/boot-expectations "1.0.0"] ;; latest release
 ```
 [](/dependency)
 

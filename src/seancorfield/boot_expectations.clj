@@ -25,7 +25,9 @@
   You can specify the version of Clojure to use for testing:
     e.g., boot expectations -v 1.6.0
   If this is not specified, the version of Clojure provided by your project
-  will be used."
+  will be used.
+
+  You can specify regular expressions for namespaces to include and exclude."
   [c clojure VERSION str   "the version of Clojure for testing."
    e exclude REGEX   regex "the filter for excluded namespaces"
    i include REGEX   regex "the filter for included namespaces"
