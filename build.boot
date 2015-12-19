@@ -11,3 +11,6 @@
       :scm         {:url "https://github.com/seancorfield/boot-expectations"}
       :license     {"Eclipse Public License"
                     "http://www.eclipse.org/legal/epl-v10.html"}})
+
+(deftask build []
+  (comp (pom) (jar) (install)))
