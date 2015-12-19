@@ -38,9 +38,9 @@
       (let [{:keys [fail error] :as summary}
             (pod/with-eval-in (pods :refresh)
               (require '[expectations :as e])
+              (e/disable-run-on-shutdown)
               (doseq [n (mapcat #(f/find-namespaces-in-dir (io/file %)) ~dirs)]
                 (require n))
-              (e/disable-run-on-shutdown)
               (binding [e/ns-finished (if ~verbose (fn [ns] (println "\nCompleted" ns)) (constantly nil))]
                 (e/run-all-tests)))]
         (when (pos? (+ fail error))
