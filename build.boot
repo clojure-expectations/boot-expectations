@@ -14,3 +14,7 @@
 
 (deftask build []
   (comp (pom) (jar) (install)))
+
+(deftask deploy
+  [g gpg-sign bool "Sign jar using GPG private key."]
+  (comp (pom) (jar) (apply push (mapcat identity *opts*))))
