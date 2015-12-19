@@ -12,13 +12,26 @@
               [clojure.tools.namespace.find :as f]]]
     (pod/require-in fresh-pod r)))
 
-(deftask expectations
-  "Run Expectations test in a pod.
+(defn replace-clojure-version
+  "Given a desired Clojure version and an artifact/version pair,
+  return the artifact/version pair, updated if it was for Clojure."
+  [new-version [artifact version :as dep]]
+  (if (= 'org.clojure/clojure artifact) [artifact new-version] dep))
 
-  There are no options for this task at present."
-  [v verbose bool "Display namespace completed for each set of Expectations."]
+(deftask expectations
+  "Run Expectations tests in a pod.
+
+  You can specify the version of Clojure to use for testing:
+    e.g., boot expectations -v 1.6.0
+  If this is not specified, the version of Clojure provided by your project
+  will be used."
+  [c clojure VERSION str  "the version of Clojure for testing."
+   v verbose         bool "Display each namespace completed"]
   (core/with-pass-thru [fs]
-    (let [pod-deps (update-in (core/get-env) [:dependencies] into base-pod-deps)
+    (let [pod-deps (update-in (core/get-env) [:dependencies]
+                              (fn [deps]
+                                (cond->> (into deps base-pod-deps)
+                                  clojure (mapv (partial replace-clojure-version clojure)))))
           pods     (pod/pod-pool pod-deps :init init)
           dirs     (mapv (memfn getPath) (core/input-dirs fs))]
       (core/cleanup (pods :shutdown))
