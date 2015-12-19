@@ -16,7 +16,7 @@
   "Run Expectations test in a pod.
 
   There are no options for this task at present."
-  []
+  [v verbose bool "Display namespace completed for each set of Expectations."]
   (core/with-pass-thru [fs]
     (let [pod-deps (update-in (core/get-env) [:dependencies] into base-pod-deps)
           pods     (pod/pod-pool pod-deps :init init)
@@ -28,6 +28,7 @@
               (doseq [n (mapcat #(f/find-namespaces-in-dir (io/file %)) ~dirs)]
                 (require n))
               (e/disable-run-on-shutdown)
-              (e/run-all-tests))]
+              (binding [e/ns-finished (if ~verbose (fn [ns] (println "\nCompleted" ns)) (constantly nil))]
+                (e/run-all-tests)))]
         (when (pos? (+ fail error))
           (throw (ex-info "Some tests failed or errored" summary)))))))
