@@ -3,9 +3,10 @@
   (:require [boot.core :as core :refer [deftask]]
             [boot.pod :as pod]))
 
-(def base-pod-deps
-  '[[expectations "2.1.3"]
-    [org.clojure/tools.namespace "0.2.11"]])
+(defn pod-deps []
+  (remove pod/dependency-loaded?
+          '[[expectations "2.1.4"]
+            [org.clojure/tools.namespace "0.2.11"]]))
 
 (defn init [fresh-pod]
   (doseq [r '[[clojure.java.io :as io]
@@ -30,7 +31,7 @@
   (core/with-pass-thru [fs]
     (let [pod-deps (update-in (core/get-env) [:dependencies]
                               (fn [deps]
-                                (cond->> (into deps base-pod-deps)
+                                (cond->> (into deps (pod-deps))
                                   clojure (mapv (partial replace-clojure-version clojure)))))
           pods     (pod/pod-pool pod-deps :init init)
           dirs     (mapv (memfn getPath) (core/input-dirs fs))]
