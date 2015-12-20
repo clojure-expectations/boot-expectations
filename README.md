@@ -4,7 +4,7 @@
 
 [](dependency)
 ```clojure
-[seancorfield/boot-expectations "1.0.0"] ;; latest release
+[seancorfield/boot-expectations "1.0.1"] ;; latest release
 ```
 [](/dependency)
 
@@ -46,6 +46,11 @@ with sound!
 ```
 boot watch speak expectations
 ```
+
+## Changes
+
+1.0.1 - 12/20/2015 - Add `distinct` to dedupe list of namespaces (#7)
+1.0.0 - 12/19/2015 - Initial public release
 
 ## License
 
