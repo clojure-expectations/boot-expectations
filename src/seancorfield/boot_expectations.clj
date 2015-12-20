@@ -46,7 +46,7 @@
             (pod/with-eval-in (pods :refresh)
               (require '[expectations :as e])
               (e/disable-run-on-shutdown)
-              (doseq [n (mapcat #(f/find-namespaces-in-dir (io/file %)) ~dirs)
+              (doseq [n (distinct (mapcat #(f/find-namespaces-in-dir (io/file %)) ~dirs))
                       :when (and (re-find ~include (name n))
                                  (not (re-find ~exclude (name n))))]
                 (require n))
