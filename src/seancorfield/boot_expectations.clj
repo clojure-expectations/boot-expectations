@@ -23,7 +23,7 @@
   "Run Expectations tests in a pod.
 
   You can specify the version of Clojure to use for testing:
-    e.g., boot expectations -v 1.6.0
+    e.g., boot expectations -c 1.6.0
   If this is not specified, the version of Clojure provided by your project
   will be used.
 
@@ -32,25 +32,25 @@
    e exclude REGEX   regex "the filter for excluded namespaces"
    i include REGEX   regex "the filter for included namespaces"
    v verbose         bool  "Display each namespace completed"]
-  (core/with-pass-thru [fs]
-    (let [pod-deps (update-in (core/get-env) [:dependencies]
-                              (fn [deps]
-                                (cond->> (into deps (pod-deps))
-                                  clojure (mapv (partial replace-clojure-version clojure)))))
-          pods     (pod/pod-pool pod-deps :init init)
-          dirs     (mapv (memfn getPath) (core/input-dirs fs))
-          include  (or include #".*")
-          exclude  (or exclude #"^$")]
-      (core/cleanup (pods :shutdown))
-      (let [{:keys [fail error] :as summary}
-            (pod/with-eval-in (pods :refresh)
-              (require '[expectations :as e])
-              (e/disable-run-on-shutdown)
-              (doseq [n (distinct (mapcat #(f/find-namespaces-in-dir (io/file %)) ~dirs))
-                      :when (and (re-find ~include (name n))
-                                 (not (re-find ~exclude (name n))))]
-                (require n))
-              (binding [e/ns-finished (if ~verbose (fn [ns] (println "\nCompleted" ns)) (constantly nil))]
-                (e/run-all-tests)))]
-        (when (pos? (+ fail error))
-          (throw (ex-info "Some tests failed or errored" summary)))))))
+  (let [pod-deps (update-in (core/get-env) [:dependencies]
+                            (fn [deps]
+                              (cond->> (into deps (pod-deps))
+                                clojure (mapv (partial replace-clojure-version clojure)))))
+        pods     (pod/pod-pool pod-deps :init init)]
+    (core/with-pass-thru [fs]
+      (let [dirs     (mapv (memfn getPath) (core/input-dirs fs))
+            include  (or include #".*")
+            exclude  (or exclude #"^$")]
+        (core/cleanup (pods :shutdown))
+        (let [{:keys [fail error] :as summary}
+              (pod/with-eval-in (pods :refresh)
+                (require '[expectations :as e])
+                (e/disable-run-on-shutdown)
+                (doseq [n (distinct (mapcat #(f/find-namespaces-in-dir (io/file %)) ~dirs))
+                        :when (and (re-find ~include (name n))
+                                   (not (re-find ~exclude (name n))))]
+                  (require n))
+                (binding [e/ns-finished (if ~verbose (fn [ns] (println "\nCompleted" ns)) (constantly nil))]
+                  (e/run-all-tests)))]
+          (when (pos? (+ fail error))
+            (throw (ex-info "Some tests failed or errored" summary))))))))

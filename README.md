@@ -4,7 +4,7 @@
 
 [](dependency)
 ```clojure
-[seancorfield/boot-expectations "1.0.1"] ;; latest release
+[seancorfield/boot-expectations "1.0.2"] ;; latest release
 ```
 [](/dependency)
 
@@ -23,6 +23,8 @@ If your tests are in a directory that is not included in the classpath, you will
 ```
 (set-env! :source-paths #{"test"})
 ```
+
+You will need to do this _outside_ the middleware layer of any prior task since `boot-expectations` creates a pod based on the dependencies outside its middleware layer for efficiency.
 
 You can see the options available on the command line:
 
@@ -49,8 +51,9 @@ boot watch speak expectations
 
 ## Changes
 
-1.0.1 - 12/20/2015 - Add `distinct` to dedupe list of namespaces (#7)
-1.0.0 - 12/19/2015 - Initial public release
+1.0.2 - 12/24/2015 - Create pod before task body for efficiency.
+1.0.1 - 12/20/2015 - Add `distinct` to dedupe list of namespaces (#7).
+1.0.0 - 12/19/2015 - Initial public release.
 
 ## License
 
