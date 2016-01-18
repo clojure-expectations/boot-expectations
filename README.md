@@ -51,10 +51,10 @@ boot watch speak expectations
 
 ## Changes
 
-1.0.3 - 12/25/2015 - Add `--requires` / `--shutdown` options.
-1.0.2 - 12/24/2015 - Create pod before task body for efficiency.
-1.0.1 - 12/20/2015 - Add `distinct` to dedupe list of namespaces (#7).
-1.0.0 - 12/19/2015 - Initial public release.
+- **1.0.3** - 12/25/2015 - Add `--requires` / `--shutdown` options.
+- **1.0.2** - 12/24/2015 - Create pod before task body for efficiency.
+- **1.0.1** - 12/20/2015 - Add `distinct` to dedupe list of namespaces (#7).
+- **1.0.0** - 12/19/2015 - Initial public release.
 
 ## License
 
