@@ -1,7 +1,7 @@
 (set-env!
  :resource-paths #{"src"})
 
-(def version "1.0.4")
+(def version "1.0.5")
 
 (task-options!
  pom {:project     'seancorfield/boot-expectations

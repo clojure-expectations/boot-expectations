@@ -4,7 +4,7 @@
 
 [](dependency)
 ```clojure
-[seancorfield/boot-expectations "1.0.3"] ;; latest release
+[seancorfield/boot-expectations "1.0.5"] ;; latest release
 ```
 [](/dependency)
 
@@ -51,6 +51,7 @@ boot watch speak expectations
 
 ## Changes
 
+- **1.0.5** - 01/30/2016 - Bug fix for `--requires` option.
 - **1.0.3** - 12/25/2015 - Add `--requires` / `--shutdown` options.
 - **1.0.2** - 12/24/2015 - Create pod before task body for efficiency.
 - **1.0.1** - 12/20/2015 - Add `distinct` to dedupe list of namespaces (#7).
