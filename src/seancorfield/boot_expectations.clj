@@ -9,8 +9,9 @@
             [org.clojure/tools.namespace "0.2.11"]]))
 
 (defn init [requires fresh-pod]
-  (doseq [r '[[clojure.java.io :as io]
-              [clojure.tools.namespace.find :as f]]]
+  (doseq [r (into '[[clojure.java.io :as io]
+                    [clojure.tools.namespace.find :as f]]
+                  requires)]
     (pod/require-in fresh-pod r)))
 
 (defn replace-clojure-version
