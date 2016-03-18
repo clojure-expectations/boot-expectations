@@ -10,7 +10,8 @@
 
 (defn init [requires fresh-pod]
   (doseq [r (into '[[clojure.java.io :as io]
-                    [clojure.tools.namespace.find :as f]]
+                    [clojure.tools.namespace.find :as f]
+                    [expectations :as e]]
                   requires)]
     (pod/require-in fresh-pod r)))
 
@@ -44,12 +45,11 @@
                               (cond->> (into deps (pod-deps))
                                 clojure (mapv (partial replace-clojure-version clojure)))))
         pods     (pod/pod-pool pod-deps :init (partial init requires))]
+    (core/cleanup (pods :shutdown))
     (core/with-pass-thru [fs]
       (let [dirs (mapv (memfn getPath) (core/input-dirs fs))]
-        (core/cleanup (pods :shutdown))
         (let [{:keys [fail error] :as summary}
-              (pod/with-eval-in (pods :refresh)
-                (require '[expectations :as e])
+              (pod/with-eval-in (pods)
                 (e/disable-run-on-shutdown)
                 (doseq [n (distinct (mapcat #(f/find-namespaces-in-dir (io/file %)) ~dirs))
                         :when (and (re-find ~include (name n))
@@ -61,5 +61,6 @@
                   (finally
                     (doseq [f ~shutdown]
                       (f)))))]
+          (pods :refresh)
           (when (pos? (+ fail error))
             (throw (ex-info "Some tests failed or errored" summary))))))))
