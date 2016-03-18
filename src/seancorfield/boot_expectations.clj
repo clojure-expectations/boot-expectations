@@ -13,7 +13,9 @@
                     [clojure.tools.namespace.find :as f]
                     [expectations :as e]]
                   requires)]
-    (pod/require-in fresh-pod r)))
+    (pod/require-in fresh-pod r))
+  (pod/with-eval-in fresh-pod
+    (e/disable-run-on-shutdown)))
 
 (defn replace-clojure-version
   "Given a desired Clojure version and an artifact/version pair,
@@ -50,7 +52,6 @@
       (let [dirs (mapv (memfn getPath) (core/input-dirs fs))]
         (let [{:keys [fail error] :as summary}
               (pod/with-eval-in (pods)
-                (e/disable-run-on-shutdown)
                 (doseq [n (distinct (mapcat #(f/find-namespaces-in-dir (io/file %)) ~dirs))
                         :when (and (re-find ~include (name n))
                                    (not (re-find ~exclude (name n))))]
