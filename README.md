@@ -51,7 +51,7 @@ boot watch speak expectations
 
 ## Changes
 
-- **1.0.6** - 03/17/2016 - Reorder pod manipulation to speed up testing (#11).
+- **1.0.7** - 03/17/2016 - Reorder pod manipulation to speed up testing (#11).
 - **1.0.5** - 01/30/2016 - Bug fix for `--requires` option.
 - **1.0.3** - 12/25/2015 - Add `--requires` / `--shutdown` options.
 - **1.0.2** - 12/24/2015 - Create pod before task body for efficiency.
