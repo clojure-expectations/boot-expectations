@@ -5,7 +5,7 @@
 
 (defn pod-deps []
   (remove pod/dependency-loaded?
-          '[[expectations "2.1.4"]
+          '[[expectations "2.1.8"]
             [org.clojure/tools.namespace "0.2.11"]]))
 
 (defn init [requires fresh-pod]
