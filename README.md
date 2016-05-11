@@ -1,4 +1,4 @@
-# boot-expectations
+# boot-expectations [![Join the chat at https://gitter.im/seancorfield/boot-expectations](https://badges.gitter.im/seancorfield/boot-expectations.svg)](https://gitter.im/seancorfield/boot-expectations?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 [Boot] task for running [Expectations] tests
 
