@@ -37,11 +37,13 @@
    i include  REGEX   regex  "the filter for included namespaces"
    r requires NS      #{sym} "namespaces to be required at pod startup"
    s shutdown FN      #{sym} "functions to be called prior to pod shutdown"
+   S startup  FN      #{sym} "functions to be called at pod startup"
    v verbose          bool   "Display each namespace completed"]
   (let [exclude  (or exclude #"^$")
         include  (or include #".*")
         requires (or requires #{})
         shutdown (or shutdown #{})
+        startup  (or startup #{})
         pod-deps (update-in (core/get-env) [:dependencies]
                             (fn [deps]
                               (cond->> (into deps (pod-deps))
@@ -57,11 +59,11 @@
                                    (not (re-find ~exclude (name n))))]
                   (require n))
                 (try
+                  (doseq [f ~startup] (f))
                   (binding [e/ns-finished (if ~verbose (fn [ns] (println "\nCompleted" ns)) (constantly nil))]
                     (e/run-all-tests))
                   (finally
-                    (doseq [f ~shutdown]
-                      (f)))))]
+                    (doseq [f ~shutdown] (f)))))]
           (pods :refresh)
           (when (pos? (+ fail error))
             (throw (ex-info "Some tests failed or errored" summary))))))))
