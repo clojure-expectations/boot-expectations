@@ -4,7 +4,7 @@
 
 [](dependency)
 ```clojure
-[seancorfield/boot-expectations "1.0.9"] ;; latest release
+[seancorfield/boot-expectations "1.0.10"] ;; latest release
 ```
 [](/dependency)
 
@@ -34,6 +34,12 @@ $ boot expectations -h
 
 or in the REPL:
 
+```bash
+$ boot expecting repl
+```
+
+The `expecting` task adds an Expectations context and disables running tests at shutdown.
+
 ```clj
 boot.user=> (doc expectations)
 ```
@@ -51,6 +57,7 @@ boot watch speak expectations
 
 ## Changes
 
+- **1.0.10** - 07/07/2016 - Add `expecting` task.
 - **1.0.9** - 05/10/2016 - Add `--startup` option.
 - **1.0.8** - 04/21/2016 - Update to Expectations 2.1.8.
 - **1.0.7** - 03/17/2016 - Reorder pod manipulation to speed up testing (#11).

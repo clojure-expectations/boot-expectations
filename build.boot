@@ -1,7 +1,8 @@
-(set-env!
- :resource-paths #{"src"})
+;; copyright (c) 2015-2016 Sean Corfield
 
-(def version "1.0.9")
+(def version "1.0.10")
+
+(set-env! :resource-paths #{"src"})
 
 (task-options!
  pom {:project     'seancorfield/boot-expectations

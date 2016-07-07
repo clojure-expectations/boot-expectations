@@ -1,12 +1,16 @@
+;; copyright (c) 2015-2016 Sean Corfield
+
 (ns seancorfield.boot-expectations
   {:boot/export-tasks true}
   (:require [boot.core :as core :refer [deftask]]
             [boot.pod :as pod]))
 
+(def ^:private expectations-version "2.1.8")
+
 (defn pod-deps []
   (remove pod/dependency-loaded?
-          '[[expectations "2.1.8"]
-            [org.clojure/tools.namespace "0.2.11"]]))
+          [['expectations expectations-version]
+           ['org.clojure/tools.namespace "0.2.11"]]))
 
 (defn init [requires fresh-pod]
   (doseq [r (into '[[clojure.java.io :as io]
@@ -22,6 +26,25 @@
   return the artifact/version pair, updated if it was for Clojure."
   [new-version [artifact version :as dep]]
   (if (= 'org.clojure/clojure artifact) [artifact new-version] dep))
+
+(deftask expecting
+  "Provide Expectations execution context.
+
+  Useful for running tests in a REPL if you want to rely on
+  boot-expectations to load Expectations for you instead of
+  requiring it directly in your own build.boot file:
+
+    boot expecting repl
+
+  In Emacs, use C-u C-c M-j when you jack in and add expecting to
+  the Boot command that CIDER shows you it will run."
+  []
+  (when-not (pod/dependency-loaded? ['expectations expectations-version])
+    (core/merge-env! :dependencies [['expectations expectations-version :scope "test"]]))
+  (core/with-pass-thru fs
+    (require 'expectations)
+    (let [disable-run-on-shutdown (resolve 'expectations/disable-run-on-shutdown)]
+      (disable-run-on-shutdown))))
 
 (deftask expectations
   "Run Expectations tests in a pod.
