@@ -5,7 +5,7 @@
   (:require [boot.core :as core :refer [deftask]]
             [boot.pod :as pod]))
 
-(def ^:private expectations-version "2.1.8")
+(def ^:private expectations-version "2.1.9")
 
 (defn pod-deps []
   (remove pod/dependency-loaded?
