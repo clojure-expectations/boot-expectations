@@ -4,7 +4,7 @@
 
 [](dependency)
 ```clojure
-[seancorfield/boot-expectations "1.0.10"] ;; latest release
+[seancorfield/boot-expectations "1.0.11"] ;; latest release
 ```
 [](/dependency)
 
@@ -57,6 +57,7 @@ boot watch speak expectations
 
 ## Changes
 
+- **1.0.11** - 07/14/2016 - Update to Expectations 2.1.9.
 - **1.0.10** - 07/07/2016 - Add `expecting` task.
 - **1.0.9** - 05/10/2016 - Add `--startup` option.
 - **1.0.8** - 04/21/2016 - Update to Expectations 2.1.8.
