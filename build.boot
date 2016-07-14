@@ -1,6 +1,6 @@
 ;; copyright (c) 2015-2016 Sean Corfield
 
-(def version "1.0.10")
+(def version "1.0.11")
 
 (set-env! :resource-paths #{"src"})
 
